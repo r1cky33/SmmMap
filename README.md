@@ -7,7 +7,7 @@ SmmMap is a UEFI SMM payload loader that dynamically maps and executes an additi
 ## Building
 
 Credits to the Authors of [Plouton](https://github.com/pRain1337/plouton/tree/main/Plouton-UEFI#option-1-building-on-docker-windows-linux-os-x). They provide a docker container that can be used to build the module. 
-After pulling the repo you should be able to just run `build.sh`. (If you're on windows please follow the instructions [Windows-Build](https://github.com/pRain1337/plouton/tree/main/Plouton-UEFI#option-2-building-on-windows))
+After pulling the container, you should be able to simply run the command from the README.
 
 ## Usage
 
