@@ -1,13 +1,32 @@
 # SmmMap
 PoC SMM-Module that manually maps another module in SMRAM
 
-## SmmMap
+## Introduction
 SmmMap is a UEFI SMM payload loader that dynamically maps and executes an additional SMM module at runtime.
 
 ## Building
 
 Credits to the Authors of [Plouton](https://github.com/pRain1337/plouton/tree/main/Plouton-UEFI#option-1-building-on-docker-windows-linux-os-x). They provide a docker container that can be used to build the module. 
 After pulling the repo you should be able to just run `build.sh`. (If you're on windows please follow the instructions [Windows-Build](https://github.com/pRain1337/plouton/tree/main/Plouton-UEFI#option-2-building-on-windows))
+
+## Usage
+
+```
+(I) [HELLO] SmmMap Initializing... 
+(I) [INFO] Handler registered 
+(I) [INFO] Trying to map payload 
+(I) [INFO] Get Image information 
+(I) [INFO] Allocating Memory for manual mapping image 
+(I) [INFO] Image Entry returned: 0 
+(I) [INFO] Grabbing relocation info 
+(I) [INFO] Calling RelocateForRuntime 
+(I) [INFO] Getting entrypoint 
+(I) [INFO] Successfully mapped image... calling entrypoint: 0x7fee64e6 
+(I) [HELLO] SmmInfect Initializing... 
+(I) [INFO] SmmInfect HANDLER CALLED!(I)
+```
+
+You can inspect the serial output (QEMU in this case) to see whats going on.
 
 ## Disclaimer
 
