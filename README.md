@@ -11,7 +11,7 @@ After pulling the container, you should be able to simply run the command from t
 
 ## Usage
 
-Credits to @Oliver-1-1 for releasing SmmInfect which is used as a payload module here.
+Credits to the Autor of [SmmInfect](https://github.com/Oliver-1-1/SmmInfect) for releasing SmmInfect which is used as a payload module here.
 ```
 (I) [HELLO] SmmMap Initializing... 
 (I) [INFO] Handler registered 
