@@ -1,3 +1,4 @@
+#include "Uefi/UefiBaseType.h"
 #include "logging.h"
 #include "memory.h"
 #include "payload.h"
@@ -18,13 +19,15 @@ static EFI_SMM_BASE2_PROTOCOL *SmmBase2;
 static EFI_SMM_SYSTEM_TABLE2 *GSmst2;
 static EFI_SMM_CPU_PROTOCOL *Cpu = NULL;
 
+EFI_HANDLE handle;
+BOOLEAN mapped = FALSE; 
+
 typedef EFI_STATUS (EFIAPI *UEFI_IMAGE_ENTRY)(
     IN EFI_HANDLE ImageHandle,
     IN EFI_SYSTEM_TABLE *SystemTable
 );
 
-EFI_STATUS
-LoadAndRelocateSmmImage(IN VOID *ImageBuffer, IN UINTN ImageSize,
+EFI_STATUS LoadAndRelocateSmmImage(IN VOID *ImageBuffer, IN UINTN ImageSize,
                         OUT VOID **EntryPoint) {
     EFI_STATUS Status;
     PE_COFF_LOADER_IMAGE_CONTEXT ImageContext;
@@ -123,6 +126,10 @@ LoadAndRelocateSmmImage(IN VOID *ImageBuffer, IN UINTN ImageSize,
 
 EFI_STATUS EFIAPI SmiHandler(EFI_HANDLE dispatch, CONST VOID *context, VOID *buffer, UINTN *size) {
 
+    if (mapped) {
+        return EFI_SUCCESS;
+    }
+
     GSmst2->SmmLocateProtocol(&gEfiSmmCpuProtocolGuid, NULL, (VOID **)&Cpu);
 
     LOG_INFO("[INFO] Trying to map payload \r\n");
@@ -142,6 +149,11 @@ EFI_STATUS EFIAPI SmiHandler(EFI_HANDLE dispatch, CONST VOID *context, VOID *buf
 
     UEFI_IMAGE_ENTRY EntryFunc = (UEFI_IMAGE_ENTRY)(UINTN)EntryPoint;
     Status = EntryFunc(NULL, gST);
+
+    if (!EFI_ERROR(Status)) {
+        mapped = TRUE;
+        GSmst2->SmiHandlerUnRegister(handle);
+    }
 
     LOG_INFO("[INFO] Image Entry returned: %r\n", Status);
 
@@ -167,7 +179,6 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE image, IN EFI_SYSTEM_TABLE *table) {
         return EFI_SUCCESS;
     }
 
-    EFI_HANDLE handle;
     GSmst2->SmiHandlerRegister(&SmiHandler, NULL, &handle);
 
     LOG_INFO("[INFO] Handler registered \r\n");
