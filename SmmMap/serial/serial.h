@@ -5,8 +5,7 @@
 * Source: https://github.com/pRain1337/plouton/tree/main
 --*/
 
-#ifndef __smminfect_serial_h__
-#define __smminfect_serial_h__
+#pragma once
 
 // our includes
 //#include "../general/config.h"
@@ -96,5 +95,3 @@ VOID SerialPrintNumber(UINT64 _v, INT64 _b);
 * Print a formatted string to serial console
 */
 VOID EFIAPI SerialPrintf(const char* fmt, ...);
-
-#endif
